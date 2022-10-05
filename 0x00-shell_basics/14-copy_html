@@ -1,2 +1,2 @@
 #!/bin/bash
-cp -n *html cd --
+rsync -a -v --ignore-existing *html cd --
