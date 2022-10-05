@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -p -m -a -n -l awk
+mkdir -p welcome/to/school
