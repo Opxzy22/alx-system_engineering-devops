@@ -1,1 +1,1 @@
-projects
+my shell project
