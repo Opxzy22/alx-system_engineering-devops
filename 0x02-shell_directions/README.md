@@ -1,1 +1,1 @@
-shell directions
+0. write a script that prints hello world
