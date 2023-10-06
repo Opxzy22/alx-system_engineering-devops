@@ -13,8 +13,8 @@ frontend http
 backend web-servers
     mode http
     balance roundrobin
-    server 176031-web-01 18.214.88.219 check
-    server -web-02 54.237.108.97:80 check
+    server 176031-web-01 35.174.185.164 check
+    server 176031-web-02 54.85.95.128 check
 " >> /etc/haproxy/haproxy.cfg
 
 # Make sure HAProxy can be managed via an init script
