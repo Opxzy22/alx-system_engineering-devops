@@ -1,30 +1,9 @@
 #!/usr/bin/env bash
-#configure web-02 to be identical with web-01
-#with automated bash script
-#add nginx response header
-#track the activities of load balancer 
-
-sudo apt-get update
-sudo apt-get install -y nginx
-
-sudo mkdir /etc/nginx/html
-sudo touch /etc/nginx/html/index.html
-echo "Hello World!" > /etc/nginx/html/index.html
-sudo touch /etc/nginx/html/404.html
-echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
-
-printf %s "server {
-    listen 80;
-    listen [::]:80 default server
-    add_header X-Served-By $HOSTNAME;
-    root /etc/nginx/html;
-    index  index.html.index.html
-    location /redirect_me {
-          return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-  }
-  error_page 404 /404.html;
- location /404 {
-   root /etc/nginx/html;
-   internal;
-}" > /etc/nginx/sites-available/default
-sudo service nginx restart
+# This script configures a ngix server to display a custom http response header
+apt-get -y update
+apt-get -y install nginx
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
+sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;\n\n\terror_page 404 \/custom_404.html;\n\tlocation = \/custom_404.html {\n\t\troot \/usr\/share\/nginx\/html;\n\t\tinternal;\n\t}/" /etc/nginx/sites-available/default
+sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By '$HOSTNAME';/" /etc/nginx/sites-available/default
+service nginx restart
