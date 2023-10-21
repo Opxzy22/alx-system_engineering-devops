@@ -5,7 +5,7 @@ service nginx stop
 
 # Update the Nginx configuration to run as the nginx user
 chmod 777 /etc/nginx/nginx.conf
-sed -i "s/user\s*www-data/user nginx/" /etc/nginx/nginx.conf
+sed -i "s/#user\s*www-data/user nginx/" /etc/nginx/nginx.conf
 
 # Update the Nginx configuration to listen on port 8080
 sed -i "s/80/8080/g" /etc/nginx/sites-available/default /etc/nginx/sites-available/default
