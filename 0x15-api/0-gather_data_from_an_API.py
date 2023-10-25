@@ -1,5 +1,6 @@
 import requests
 import sys
+"""Returns to-do list information for a given employee ID."""
 
 if __name__ == '__main__':
     url = 'https://jsonplaceholder.typicode.com'
