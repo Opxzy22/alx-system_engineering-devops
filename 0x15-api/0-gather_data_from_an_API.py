@@ -5,9 +5,9 @@ if __name__ == '__main__':
     url = 'https://jsonplaceholder.typicode.com'
 
     emp_id = sys.argv[1]
-    employee_url = 'url/user/{}'.format(emp_id)
-    response = requests.get(employer_url)
-    if respoonse.status_code !=200:
+    employee_url = '{}/user/{}'.format(url, emp_id)
+    response = requests.get(employee_url)
+    if response.status_code !=200:
         print("error employee id with id {} not found".format(emp_id))
         sys.exit(1)
 
@@ -22,9 +22,9 @@ if __name__ == '__main__':
 
     todos = todo_response.json()
     total_task = len(todos)
-    task_completed = [task for task in total_task if task.get('completed')]:
+    task_completed = [task for task in total_task if task.get('completed')]
     num_of_task_completed = len(task_completed)
 
-    print("employee {} is done with {}/{}".format(employee_name, task_completed, total_task)
+    print("employee {} is done with {}/{}".format(employee_name, task_completed, total_task))
     for task in completed_tasks:
             print("\t{}".format(task.get('title')))
