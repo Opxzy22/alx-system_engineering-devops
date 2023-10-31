@@ -1,40 +1,40 @@
 #!/usr/bin/python3
-""" pytthon script that export data to csv"""
-import csv
-import requests
-import sys
-""" pytthon script that export data to csv"""
+"""
+    Calls to data from the jsonplaceholder website parsed to csv formats
+    from task 0, extend your Python script to export data in the CSV format
+"""
+if __name__ == "__main__":
+    """
+        extend your Python script i task 0 to export data in the CSV format
+    """
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: {} EMPLOYEE_ID".format(sys.argv[0]))
-        sys.exit(1)
+    import csv
+    import requests
+    import sys
 
-    emp_id = sys.argv[1]
-    url = "https://jsonplaceholder.typicode.com/users/{}".format(emp_id)
-    response = requests.get(url)
-    if response.status_code != 200:
-        print("Error: Employee with ID {} not found.".format(emp_id))
-        sys.exit(1)
+    EMPLOYEE_ID = sys.argv[1]
 
-    employee_name = response.json().get("name")
-    url = "https://jsonplaceholder.typicode.com/todos?userId={}".format(emp_id)
-    response = requests.get(url)
-    todos = response.json()
+    link = "https://jsonplaceholder.typicode.com/users"
+    userResponse = requests.get(f"{link}/{EMPLOYEE_ID}")
+    EMPLOYEE_NAME = userResponse.json().get("username")
+    fileName = "{}.csv".format(EMPLOYEE_ID)
 
-    with open("{}.csv".format(emp_id), mode="w", newline="") as csv_file:
-        fieldnames = ["USER_ID", "USERNAME",
-                      "TASK_COMPLETED_STATUS", "TASK_TITLE"]
-        writer = csv.DictWriter(csv_file, quoting=csv.QUOTE_ALL,
-                                fieldnames=fieldnames)
+    todoList = requests.get(f"{link}/{EMPLOYEE_ID}/todos").json()
+    with open(fileName, "w", newline="") as fd:
+        pen = csv.writer(
+                fd,
+                delimiter=',',
+                quotechar='"',
+                quoting=csv.QUOTE_ALL
+            )
 
-        writer.writeheader()
-        for todo in todos:
-            writer.writerow({
-                "USER_ID": emp_id,
-                "USERNAME": employee_name,
-                "TASK_COMPLETED_STATUS": todo["completed"],
-                "TASK_TITLE": todo["title"]
-            })
+        for task in todoList:
+            line = [
+                    EMPLOYEE_ID,
+                    EMPLOYEE_NAME,
+                    task.get('completed'),
+                    task.get('title')
+                ]
 
-    print("Data exported to {}.csv".format(emp_id))
+            pen.writerow(line)
+
